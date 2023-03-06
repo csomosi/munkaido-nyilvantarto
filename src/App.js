@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
 
 import { loginStatus } from './auth';
-import LoginPage from './components/LogInPage';
 import InnerPage from './components/InnerPage';
+import LoginPage from './components/LoginPage';
 import { getUserDataByEmail } from './database';
 
-const App = props => {
+const App = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -14,9 +13,9 @@ const App = props => {
     const storedUser = await loginStatus();
     if (storedUser) {
       console.log('restored user from async storage: ', storedUser.email);
-      const userData = await getUserDataFromFirebase(storedUser.email);
+      const userData = await getUserDataByEmail(storedUser.email);
       if (!userData) return;
-      console.log(`˙${setUserData.name} is loaded from the remote database`);
+      console.log(`${userData.name} is loaded from the remote database`);
       setUserData(userData);
     }
   };

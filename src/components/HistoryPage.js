@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { StyleSheet, View, Text, FlatList } from 'react-native';
 
 import { getHistory } from '../database';
 
@@ -18,7 +18,7 @@ export default function HistoryPage(props) {
         <Text
           style={[
             styles.currentStateText,
-            item.state === 'in' ? styles : styles.currentStateTextOut,
+            item.state === 'in' ? styles.currentStateTextIn : styles.currentStateTextOut,
           ]}>
           {item.state === 'in' ? 'bejött' : 'távozott'}
         </Text>
@@ -27,6 +27,7 @@ export default function HistoryPage(props) {
   );
 
   useEffect(() => {
+    // async IIFE
     (async () => {
       const historyFromFirebase = await getHistory(props.userData.email);
       setHistory(historyFromFirebase);
@@ -38,7 +39,6 @@ export default function HistoryPage(props) {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     padding: 10,

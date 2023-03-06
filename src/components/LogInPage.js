@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   View,
   Text,
@@ -11,14 +11,14 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { signIn, signUp } from '../auth';
-import { createUserData, getUserDataByEmail } from '../database';
+import { getUserDataByEmail, createUserData } from '../database';
 
 const LoginPage = ({ setUserData }) => {
   const [isSignUpActive, setIsSignUpActive] = useState(false);
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
-  const [password, setPassord] = useState('');
-  const [passwordConfirm, setPassordConfirm] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const login = async () => {
     console.log('logging in...');
@@ -35,7 +35,7 @@ const LoginPage = ({ setUserData }) => {
       name: userName,
       email: email.toLowerCase(),
       currentState: 'out',
-      history: [],
+      // history: [],
     };
     await createUserData(initialUserData);
     setUserData(initialUserData);
@@ -53,7 +53,6 @@ const LoginPage = ({ setUserData }) => {
             Bejelentkezés
           </Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={[styles.toggleButtonRight, isSignUpActive && styles.active]}
           onPress={() => {
@@ -90,17 +89,17 @@ const LoginPage = ({ setUserData }) => {
           <TextInput
             style={styles.input}
             placeholder="jelszó"
-            secureTextEntry={true}
             value={password}
-            onChangeText={setPassord}
+            onChangeText={setPassword}
+            secureTextEntry={true}
           />
           {isSignUpActive && (
             <TextInput
               style={styles.input}
-              placeholder="jelszó még egyszer"
+              placeholder="jelszó mégegyszer"
               secureTextEntry={true}
               value={passwordConfirm}
-              onChangeText={setPassordConfirm}
+              onChangeText={setPasswordConfirm}
             />
           )}
           {isSignUpActive ? (
@@ -147,11 +146,10 @@ const styles = StyleSheet.create({
   toggleContainer: {
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? 20 : 20,
-    marginHorizontal: 10,
   },
   toggleButtonLeft: {
     marginTop: 20,
-    paddingHorizontal: 30,
+    paddingHorizontal: 50,
     paddingVertical: 14,
     borderWidth: 1,
     borderBottomLeftRadius: 15,
@@ -160,7 +158,7 @@ const styles = StyleSheet.create({
   toggleButtonRight: {
     marginTop: 20,
     paddingVertical: 14,
-    paddingHorizontal: 30,
+    paddingHorizontal: 50,
     borderWidth: 1,
     borderBottomRightRadius: 15,
     borderTopRightRadius: 15,

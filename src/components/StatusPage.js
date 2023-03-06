@@ -30,11 +30,9 @@ const StatusPage = ({ navigation: { navigate }, userData, setUserData }) => {
         </TouchableOpacity>
       </View>
       <Text style={styles.appTitle}>Szia {userData.name}!</Text>
-
       <Text style={styles.statusText}>
         Jelenlegi státuszod: {userData.currentState === 'in' ? 'bejött' : 'távozott'}
       </Text>
-
       <Switch
         trackColor={{ false: '#767577', true: '#81b0ff' }}
         thumbColor={userData.currentState === 'in' ? '#f5dd4b' : '#f4f3f4'}
@@ -42,7 +40,6 @@ const StatusPage = ({ navigation: { navigate }, userData, setUserData }) => {
         onValueChange={toggleSwitch}
         value={userData.currentState === 'in'}
       />
-
       <TouchableOpacity onPress={() => navigate('Napló')} style={[styles.button, styles.shadow]}>
         <Text style={styles.buttonText}>Napló megtekintése</Text>
       </TouchableOpacity>
