@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { loginStatus } from './auth';
 import InnerPage from './components/InnerPage';
-import LoginPage from './components/LoginPage';
+import LoginPage from './components/LogInPage';
 import { getUserDataByEmail } from './database';
 
 const App = () => {
