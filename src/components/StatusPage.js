@@ -1,10 +1,19 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Switch, Image, Dimensions } from 'react-native';
 
 import { signOutUser } from '../auth';
 import { addHistory, updateUserState } from '../database';
 
+const heightY = Dimensions.get('window').height;
+
 const StatusPage = ({ navigation: { navigate }, userData, setUserData }) => {
+  const [link, setLink] = useState('init');
+  if (link === 'init') {
+    generateImage();
+  } else {
+    null;
+  }
+
   const handleLogout = async () => {
     await signOutUser();
     setUserData(null);
@@ -12,6 +21,7 @@ const StatusPage = ({ navigation: { navigate }, userData, setUserData }) => {
 
   const toggleSwitch = () => {
     let newState = '';
+    generateImage();
     if (userData.currentState === 'in') {
       newState = 'out';
     } else {
@@ -21,6 +31,17 @@ const StatusPage = ({ navigation: { navigate }, userData, setUserData }) => {
     updateUserState(userData.email, newState);
     addHistory(userData.email, newState);
   };
+
+  async function generateImage() {
+    try {
+      const response = await fetch('https://inspirobot.me/api?generate=true');
+      const link = await response.text();
+      setLink(link);
+      console.log('new inspiration image is loaded');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -43,6 +64,10 @@ const StatusPage = ({ navigation: { navigate }, userData, setUserData }) => {
       <TouchableOpacity onPress={() => navigate('Napló')} style={[styles.button, styles.shadow]}>
         <Text style={styles.buttonText}>Napló megtekintése</Text>
       </TouchableOpacity>
+
+      <View>
+        <Image style={styles.image} source={{ uri: link }} />
+      </View>
     </View>
   );
 };
@@ -96,6 +121,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+  },
+  image: {
+    width: heightY * 0.35,
+    height: heightY * 0.35,
+    resizeMode: 'contain',
   },
 });
 
