@@ -4,7 +4,6 @@ import { loginStatus } from './auth';
 import InnerPage from './components/InnerPage';
 import LoginPage from './components/LogInPage';
 import { getUserDataByEmail } from './database';
-import { generateImage } from './components/StatusPage';
 
 const App = () => {
   const [userData, setUserData] = useState(null);
@@ -34,7 +33,6 @@ const App = () => {
     return loading ? null : <LoginPage setUserData={setUserData} />;
   }
   return loading ? null : <InnerPage setUserData={setUserData} userData={userData} />;
-  generateImage(link);
 };
 
 export default App;
