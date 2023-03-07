@@ -7,11 +7,14 @@ import {
   TouchableOpacity,
   TextInput,
   Button,
+  Dimensions,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { signIn, signUp } from '../auth';
+import { signIn, signUp, resetPassword } from '../auth';
 import { getUserDataByEmail, createUserData } from '../database';
+
+const heightY = Dimensions.get('window').height;
 
 const LoginPage = ({ setUserData }) => {
   const [isSignUpActive, setIsSignUpActive] = useState(false);
@@ -99,6 +102,28 @@ const LoginPage = ({ setUserData }) => {
             onChangeText={setPassword}
             secureTextEntry={true}
           />
+
+          {isSignUpActive ? null : (
+            <TouchableOpacity
+              onPress={() => {
+                if (!email) {
+                  window.alert('Kérlek add meg az email címedet!');
+                  return;
+                } else {
+                  // I used this help: https://infinitbility.com/react-native-regex/
+                  // then: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes
+                  const emailRegex = /\S+@\S+\.\S+/;
+                  if (!emailRegex.test(email)) {
+                    window.alert('Az email cím nem megfelelő formátumú!');
+                  } else {
+                    resetPassword(email);
+                  }
+                }
+              }}>
+              <Text style={styles.forgotPassText}>Elfelejtett jelszó</Text>
+            </TouchableOpacity>
+          )}
+
           {isSignUpActive && (
             <TextInput
               style={styles.input}
@@ -178,6 +203,14 @@ const styles = StyleSheet.create({
   },
   activeText: {
     color: '#ffffff',
+  },
+  forgotPassText: {
+    color: 'black',
+    fontStyle: 'italic',
+    textAlign: 'right',
+    fontSize: heightY * 0.02,
+    marginTop: 10,
+    marginBottom: 20,
   },
 });
 
