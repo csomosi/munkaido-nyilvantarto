@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Switch, Image, Dimensions } from 'react-native';
 
-import { signOutUser } from '../auth';
 import { addHistory, updateUserState } from '../database';
 
 const heightY = Dimensions.get('window').height;
@@ -13,11 +12,6 @@ const StatusPage = ({ navigation: { navigate }, userData, setUserData }) => {
   } else {
     null;
   }
-
-  const handleLogout = async () => {
-    await signOutUser();
-    setUserData(null);
-  };
 
   const toggleSwitch = () => {
     let newState = '';
@@ -45,9 +39,9 @@ const StatusPage = ({ navigation: { navigate }, userData, setUserData }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.logoutSection}>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutButtonText}>Kijelentkezés</Text>
+      <View style={styles.settingsSection}>
+        <TouchableOpacity style={styles.settingsButton} onPress={() => navigate('Beállítások')}>
+          <Text style={styles.settingsButtonText}>Beállítások</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.appTitle}>Szia {userData.name}!</Text>
@@ -86,13 +80,13 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginVertical: 30,
   },
-  logoutSection: {
+  settingsSection: {
     alignSelf: 'stretch',
   },
-  logoutButton: {
+  settingsButton: {
     alignSelf: 'stretch',
   },
-  logoutButtonText: {
+  settingsButtonText: {
     marginRight: 'auto',
     fontStyle: 'italic',
     color: 'blue',
