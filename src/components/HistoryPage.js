@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, FlatList } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
+// import { SvgXml } from 'react-native-svg';
 
 import { getHistory } from '../database';
+import { deleteHistoryById } from '../database';
+
+// import trashIcon from '../../assets/Trash_font_awesome.js';
 
 export default function HistoryPage(props) {
   const [history, setHistory] = useState([]);
@@ -23,8 +27,27 @@ export default function HistoryPage(props) {
           {item.state === 'in' ? 'bejött' : 'távozott'}
         </Text>
       </View>
+      {index === 0 && (
+        <TouchableOpacity onPress={deleteHistoryItem}>
+          <Text style={styles.trash}>TÖRLÉS</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
+
+  const deleteHistoryItem = () => {
+    Alert.alert('Megerősítés', 'Biztosan törölni akarod?', [
+      { text: 'Mégsem', onPress: () => console.log('mégsem') },
+      {
+        text: 'Törlés',
+        onPress: () => {
+          deleteHistoryById();
+          console.log('tényleg töröl');
+        },
+      },
+    ]);
+    console.log('delete button pushed');
+  };
 
   useEffect(() => {
     // async IIFE
@@ -72,5 +95,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -2, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+  },
+  trash: {
+    color: 'red',
+    marginLeft: 30,
+    fontSize: 17,
   },
 });
